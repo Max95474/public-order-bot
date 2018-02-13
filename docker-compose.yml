@@ -7,12 +7,14 @@ services:
       - .:/go/src/public-order-bot
     working_dir: /go/src/public-order-bot
     command: go run main.go
+    environment:
+      - TELEGRAM_APIKEY=${TELEGRAM_APIKEY}
   database:
     image: postgres
     environment:
-      - POSTGRES_PASSWORD=botpass
-      - POSTGRES_USER=taxi-bot
-      - POSTGRES_DB=taxi-bot
+      - POSTGRES_PASSWORD={POSTGRES_PASSWORD}
+      - POSTGRES_USER={POSTGRES_USER}
+      - POSTGRES_DB={POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
