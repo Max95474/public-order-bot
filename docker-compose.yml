@@ -1,0 +1,21 @@
+version: "2"
+
+services:
+  app:
+    image: golang
+    volumes:
+      - .:/go/src/public-order-bot
+    working_dir: /go/src/public-order-bot
+    command: go run main.go
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=botpass
+      - POSTGRES_USER=taxi-bot
+      - POSTGRES_DB=taxi-bot
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./database/postgresql:/etc/postgresql"
+      - "./database/log:/var/log/postgresql"
+      - "./database/postgresqlData/data:/var/lib/postgresql/data"
