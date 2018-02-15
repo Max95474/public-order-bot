@@ -5,15 +5,14 @@ import (
   "log"
 )
 
-
 func Start(apiKey string, debug bool) {
   bot, err := tgbotapi.NewBotAPI(apiKey)
-  
+
   if err != nil {
     log.Panic(err)
   }
 
-  bot.Debug = debug;
+  bot.Debug = debug
 
   log.Printf("Authorized on account %s", bot.Self.UserName)
 
@@ -28,13 +27,8 @@ func Start(apiKey string, debug bool) {
     }
 
     log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-    
-    command := ejectCommand(update.Message.Text, bot.Self.UserName)
-
-    response := getResponse(command)
-
+    response := getResponse(update.Message.Command())
     msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
-    msg.ReplyToMessageID = update.Message.MessageID
 
     bot.Send(msg)
   }

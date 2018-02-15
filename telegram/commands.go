@@ -1,8 +1,5 @@
 package telegram
 
-import (
-)
-
 func getResponse(command string) string {
   
   switch command {
