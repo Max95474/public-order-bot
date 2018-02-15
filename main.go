@@ -3,10 +3,11 @@ package main
 import (
 	"github.com/Syfaro/telegram-bot-api"
 	"log"
+	"os"
 )
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("520708190:AAHGJshPWGeDleVkmEPaCvUphErEvc5fTps")
+	bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APIKEY"))
 	if err != nil {
 		log.Panic(err)
 	}

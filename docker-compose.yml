@@ -2,13 +2,12 @@ version: "2"
 
 services:
   app:
-    image: golang
-    volumes:
-      - .:/go/src/public-order-bot
-    working_dir: /go/src/public-order-bot
-    command: go run main.go
+    links:
+      - database
     environment:
       - TELEGRAM_APIKEY=${TELEGRAM_APIKEY}
+    build: .
+    command: go run main.go
   database:
     image: postgres
     environment:
