@@ -8,6 +8,24 @@
   version = "v4.6.1"
 
 [[projects]]
+  name = "github.com/go-pg/migrations"
+  packages = ["."]
+  revision = "56f220c05c9e11f7ca5b06a232e43eda16ce2cde"
+  version = "v6.1.0"
+
+[[projects]]
+  name = "github.com/go-pg/pg"
+  packages = [".","internal","internal/parser","internal/pool","orm","types"]
+  revision = "eff1632b1caea7c554b174d5551ff2791021810c"
+  version = "v6.9.3"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/jinzhu/inflection"
+  packages = ["."]
+  revision = "1c35d901db3da928c72a72d8458480cc9ade058f"
+
+[[projects]]
   name = "github.com/technoweenie/multipartstreamer"
   packages = ["."]
   revision = "a90a01d73ae432e2611d178c18367fbaa13e0154"
@@ -16,6 +34,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5b4aa615e2be5e1886d47784d92925185abff32680b7c8eff5936b97baf86d88"
+  inputs-digest = "1412f481ae846fb2ef63421dd774421b76246500efaaebeb9b32edab8ff1ffb2"
   solver-name = "gps-cdcl"
   solver-version = 1
