@@ -1,54 +1,64 @@
 package telegram
 
-func getResponse(command string) string {
-  
-  switch command {
-    case "create": {
-      return createOrder()
-    }
-    case "list": {
-      return ordersList()
-    }
-    case "add": {
-      return addItem()
-    }
-    case "remove": {
-      return removeItem()
-    }
-    case "result": {
-      return orderResult()
-    }
-    case "close": {
-      return closeOrder()
-    }
-    default: {
-      return "Poshel na hui"
-    }
+import (
+  "github.com/Syfaro/telegram-bot-api"
+  "fmt"
+)
+
+func getResponse(update *tgbotapi.Update) {
+  switch update.Message.Command() {
+    case "create": createOrder(update)
+    case "list": ordersList(update)
+    case "add": addItem(update)
+    case "remove": removeItem(update)
+    case "result": orderResult(update)
+    case "close": closeOrder(update)
   }
 }
 
-
-
-func createOrder() string {
-  return "Order Created"
+func createOrder(update *tgbotapi.Update) {
+  orderName := update.Message.CommandArguments()
+  var response string
+  if orderName == "" {
+    response = "Enter order name i.e `/create dinner indian food`"
+  } else {
+    response = fmt.Sprintf("Order *%v* created", orderName)
+  }
+  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
+  msg.ParseMode = "Markdown"
+  telegramBot.Send(msg)
 }
 
-func ordersList() string {
-  return "Orders list"
+func ordersList(update *tgbotapi.Update) {
+  msg := tgbotapi.NewMessage(update.Message.Chat.ID, "azazaza")
+  msg.ParseMode = "Markdown"
+  telegramBot.Send(msg)
 }
 
-func addItem() string {
-  return "Item added to order"
+func addItem(update *tgbotapi.Update) {
+  response := "Item added to order"
+  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
+  msg.ParseMode = "Markdown"
+  telegramBot.Send(msg)
 }
 
-func removeItem() string {
-  return "Item removed from order"
+func removeItem(update *tgbotapi.Update) {
+  response := "Item has been removed"
+  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
+  msg.ParseMode = "Markdown"
+  telegramBot.Send(msg)
 }
 
-func orderResult() string {
-  return "All added items"
+func orderResult(update *tgbotapi.Update) {
+  response := "Order result"
+  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
+  msg.ParseMode = "Markdown"
+  telegramBot.Send(msg)
 }
 
-func closeOrder() string {
-  return "Order closed"
+func closeOrder(update *tgbotapi.Update) {
+  response := "Order has been closed"
+  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
+  msg.ParseMode = "Markdown"
+  telegramBot.Send(msg)
 }
