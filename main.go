@@ -2,9 +2,9 @@ package main
 
 import (
 	"public-order-bot/telegram"
+	"public-order-bot/config"
 )
 
 func main() {
-	telegram.Start("520708190:AAHGJshPWGeDleVkmEPaCvUphErEvc5fTps", false)
-	// telegram.Start(os.Getenv("TELEGRAM_APIKEY"))
+	telegram.Start(config.Config.TelegramKey, false)
 }
