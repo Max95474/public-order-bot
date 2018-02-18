@@ -5,31 +5,24 @@ import (
   "log"
 )
 
+var telegramBot *tgbotapi.BotAPI
+
 func Start(apiKey string, debug bool) {
   bot, err := tgbotapi.NewBotAPI(apiKey)
-
+  telegramBot = bot
   if err != nil {
     log.Panic(err)
   }
-
-  bot.Debug = debug
-
-  log.Printf("Authorized on account %s", bot.Self.UserName)
-
+  telegramBot.Debug = debug
+  log.Printf("Authorized on account %s", telegramBot.Self.UserName)
   u := tgbotapi.NewUpdate(0)
   u.Timeout = 60
-
-  updates, err := bot.GetUpdatesChan(u)
-
+  updates, err := telegramBot.GetUpdatesChan(u)
   for update := range updates {
     if update.Message == nil {
       continue
     }
-
     log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-    response := getResponse(update.Message.Command())
-    msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
-
-    bot.Send(msg)
+    getResponse(&update)
   }
 }
