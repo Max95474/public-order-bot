@@ -7,24 +7,24 @@ import (
 func init() {
 	migrations.Register(func(db migrations.DB) error {
 		_, err := db.Exec(`
-				CREATE TABLE "user" (
+				CREATE TABLE users (
 					id VARCHAR(255) NOT NULL PRIMARY KEY
 				);
-				CREATE TABLE "order" (
+				CREATE TABLE orders (
 					id SERIAL PRIMARY KEY,
-					user_id VARCHAR(255) NOT NULL REFERENCES "user" ON DELETE CASCADE
+					user_id VARCHAR(255) NOT NULL REFERENCES users ON DELETE CASCADE
 				);
-				CREATE TABLE item (
+				CREATE TABLE items (
 					id SERIAL PRIMARY KEY,
-					order_id INT NOT NULL REFERENCES "order" ON DELETE CASCADE,
+					order_id INT NOT NULL REFERENCES orders ON DELETE CASCADE,
 					text VARCHAR(255) NOT NULL
 				);`)
 		return err
 	}, func(db migrations.DB) error {
 		_, err := db.Exec(`
-				DROP TABLE item;
-				DROP TABLE "order";
-				DROP TABLE "user"`)
+				DROP TABLE items;
+				DROP TABLE orders;
+				DROP TABLE users`)
 		return err
 	})
 }
