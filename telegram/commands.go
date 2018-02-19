@@ -2,10 +2,6 @@ package telegram
 
 import (
   "github.com/Syfaro/telegram-bot-api"
-  "fmt"
-  "io/ioutil"
-  "text/template"
-  "bytes"
 )
 
 func getResponse(update *tgbotapi.Update) {
@@ -23,15 +19,9 @@ func createOrder(update *tgbotapi.Update) {
   orderName := update.Message.CommandArguments()
   var response string
   if orderName == "" {
-    response = "Enter order name i.e `/create dinner indian food`"
+    response = getResponseText("create_fail_order_name", nil)
   } else {
-    dat, err := ioutil.ReadFile("./telegram/templates/create_success.md")
-    check(err)
-    tmpl := template.New("test")
-    tmpl, err = tmpl.Parse(string("Your order *{{.orderName}}* has been created"))
-    check(err)
-    response = string(dat)
-    fmt.Println(response)
+    response = getResponseText("create_success", nil)
   }
   msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
   msg.ParseMode = "Markdown"
