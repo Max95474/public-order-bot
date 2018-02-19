@@ -5,6 +5,10 @@ import (
   "log"
 )
 
+func init() {
+  readTemplates()
+}
+
 var telegramBot *tgbotapi.BotAPI
 
 func Start(apiKey string, debug bool) {
