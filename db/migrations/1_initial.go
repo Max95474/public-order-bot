@@ -12,7 +12,9 @@ func init() {
 				);
 				CREATE TABLE orders (
 					id SERIAL PRIMARY KEY,
-					user_id VARCHAR(255) NOT NULL REFERENCES users ON DELETE CASCADE
+          chat_id VARCHAR(255) NOT NULL,
+					user_id VARCHAR(255) NOT NULL REFERENCES users ON DELETE CASCADE,
+          name VARCHAR(255) NOT NULL
 				);
 				CREATE TABLE items (
 					id SERIAL PRIMARY KEY,

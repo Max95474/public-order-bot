@@ -15,11 +15,13 @@ func CreateItem(orderId int, text string) {
   }
 }
 
-//func GetItems(orderId int) []*models.Item {
-//  item := models.Item{OrderId: orderId}
-//  err := db.Conn.Select(&item)
-//  if err != nil {
-//    panic(err)
-//  }
-//  return &item
-//}
+func GetItems(orderId int) []models.Item {
+  var items []models.Item
+  err := db.Conn.Model(&items).
+      Where("order_id = ?", orderId).Select()
+
+  if err != nil {
+    panic(err)
+  }
+  return items
+}

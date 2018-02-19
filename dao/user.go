@@ -5,20 +5,14 @@ import (
 	"public-order-bot/db/models"
 )
 
-func CreateUser(id string) {
-	err := db.Conn.Insert(&models.User{
-		Id: id,
-	})
-	if err != nil {
-		panic(err)
-	}
+func CreateUser(id string) (*models.User, error) {
+  user := models.User{Id: id}
+	err := db.Conn.Insert(&user)
+	return &user, err
 }
 
-func GetUser(id string) *models.User {
+func GetUser(id string) (*models.User, error) {
 	user := models.User{Id: id}
 	err := db.Conn.Select(&user)
-	if err != nil {
-		panic(err)
-	}
-	return &user
+	return &user, err
 }
