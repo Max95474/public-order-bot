@@ -7,10 +7,11 @@ import (
 type config struct {
 	TelegramKey string
 	Database struct {
-		Username     string `json:"username"`
-		Password     string `json:"password"`
-		DatabaseName string `json:"database_name"`
-	} `json:"database"`
+	  Host         string
+		Username     string
+		Password     string
+		DatabaseName string
+	}
 }
 
 var Config *config
@@ -23,6 +24,7 @@ func loadConfig() *config {
 	appConfig := &config{}
 
 	appConfig.TelegramKey = os.Getenv("TELEGRAM_APIKEY")
+	appConfig.Database.Host = os.Getenv("POSTGRES_HOST")
 	appConfig.Database.Username = os.Getenv("POSTGRES_USER")
 	appConfig.Database.Password = os.Getenv("POSTGRES_PASSWORD")
 	appConfig.Database.DatabaseName = os.Getenv("POSTGRES_DB")

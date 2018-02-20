@@ -13,6 +13,7 @@ func init() {
 
 func connect() *pg.DB {
 	return pg.Connect(&pg.Options{
+	  Addr:     config.Config.Database.Host,
 		User:     config.Config.Database.Username,
 		Password: config.Config.Database.Password,
 		Database: config.Config.Database.DatabaseName,
