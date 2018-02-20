@@ -2,6 +2,8 @@ package telegram
 
 import (
   "github.com/Syfaro/telegram-bot-api"
+  "public-order-bot/dao"
+  "fmt"
 )
 
 func getResponse(update *tgbotapi.Update) {
@@ -21,6 +23,9 @@ func createOrder(update *tgbotapi.Update) {
   if orderName == "" {
     response = getResponseText("create_fail_order_name", nil)
   } else {
+    orderId, err := dao.CreateOrder(string(update.Message.Chat.ID), string(update.Message.From.ID), orderName)
+    check(err)
+    fmt.Println(orderId)
     response = getResponseText("create_success", nil)
   }
   msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
