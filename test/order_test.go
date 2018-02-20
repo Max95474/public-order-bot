@@ -8,7 +8,7 @@ import (
 var orderId int
 
 func TestCreateOrder(t *testing.T) {
-  user, err := dao.CreateUser("123123")
+  user, err := dao.AddUser("123123")
   if err != nil {
     t.Failed()
   }
