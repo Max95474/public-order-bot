@@ -6,8 +6,9 @@ import (
 )
 
 func CreateOrder(chatId string, userId string, name string) (*models.Order, error) {
+  _, err := AddUser(userId)
   newOrder := models.Order{ChatId: chatId, UserId: userId, Name: name}
-  err := db.Conn.Insert(&newOrder)
+  err = db.Conn.Insert(&newOrder)
   return &newOrder, err
 }
 
