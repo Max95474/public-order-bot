@@ -2,7 +2,8 @@ package telegram
 
 import (
   "io/ioutil"
-  "fmt"
+  "text/template"
+  "bytes"
   "strings"
 )
 
@@ -21,10 +22,12 @@ func readTemplates() {
     check(err)
     templatesMap[removeExtension(file.Name())] = string(dat)
   }
-  fmt.Println(templatesMap)
 }
 
 func getResponseText(message string, data templateData) string {
-  response := templatesMap[message]
-  return response
+  tmpl, err := template.New("template").Parse(templatesMap[message])
+  check(err)
+  var doc bytes.Buffer
+  tmpl.Execute(&doc, data)
+  return doc.String()
 }
