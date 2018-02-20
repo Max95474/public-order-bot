@@ -3,11 +3,13 @@ package test
 import (
   "testing"
   "public-order-bot/dao"
+  "public-order-bot/db/models"
 )
 
 var orderId int
 
-func TestCreateOrder(t *testing.T) {
+func TestOrder(t *testing.T) {
+  // Create user
   user, err := dao.AddUser("123123")
   if err != nil {
     t.Failed()
@@ -19,6 +21,8 @@ func TestCreateOrder(t *testing.T) {
   if user.Id != "123123" {
     t.Failed()
   }
+
+  // Create order
   newOrder, err := dao.CreateOrder("5555", "123123", "test order")
   if err != nil {
     t.Error(err)
@@ -29,6 +33,18 @@ func TestCreateOrder(t *testing.T) {
     t.Failed()
   }
   orderId = newOrder.Id
+
+  // Add item
+  var item *models.Item
+  item, err = dao.CreateItem("5555", orderId, "Item text goes here")
+  if item == nil {
+    t.Failed()
+  }
+  var otherItem *models.Item
+  otherItem, err = dao.CreateItem("7777", orderId, "Item text goes here")
+  if otherItem != nil {
+    t.Error(err)
+  }
 }
 
 func TestGetOrder(t *testing.T) {
