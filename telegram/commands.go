@@ -22,7 +22,7 @@ func createOrder(update *tgbotapi.Update) {
   if orderName == "" {
     response = getResponseText("create_fail_order_name", nil)
   } else {
-    order, err := dao.CreateOrder(string(update.Message.Chat.ID), string(update.Message.From.ID), orderName)
+    order, err := dao.CreateOrder(string(update.Message.Chat.ID), string(update.Message.From.UserName), orderName)
     check(err)
     responseData := templateData {
       "orderName": order.Name,
@@ -36,8 +36,13 @@ func createOrder(update *tgbotapi.Update) {
 }
 
 func ordersList(update *tgbotapi.Update) {
-  msg := tgbotapi.NewMessage(update.Message.Chat.ID, "azazaza")
-  msg.ParseMode = "Markdown"
+  orders, err := dao.ListOrders(string(update.Message.Chat.ID))
+  check(err)
+  responseData := templateData {
+    "orderList": orders,
+  }
+  response := getResponseText("orders_list", responseData)
+  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
   telegramBot.Send(msg)
 }
 
