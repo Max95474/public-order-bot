@@ -4,6 +4,7 @@ import (
   "github.com/Syfaro/telegram-bot-api"
   "public-order-bot/dao"
   "strconv"
+  "strings"
 )
 
 func getResponse(update *tgbotapi.Update) {
@@ -31,9 +32,7 @@ func createOrder(update *tgbotapi.Update) {
     }
     response = getResponseText("create_success", responseData)
   }
-  msg := tgbotapi.NewMessage(int64(update.Message.From.ID), response)
-  msg.ParseMode = "Markdown"
-  telegramBot.Send(msg)
+  sendMessage(update.Message.Chat.ID, response)
 }
 
 func ordersList(update *tgbotapi.Update) {
@@ -43,27 +42,26 @@ func ordersList(update *tgbotapi.Update) {
     "orderList": orders,
   }
   response := getResponseText("orders_list", responseData)
-  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
-  telegramBot.Send(msg)
+  sendMessage(update.Message.Chat.ID, response)
 }
 
 func addItem(update *tgbotapi.Update) {
-  response := "Item added to order"
-  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
-  msg.ParseMode = "Markdown"
-  telegramBot.Send(msg)
+  commands := strings.Fields(update.Message.CommandArguments())
+  orderId, err := strconv.Atoi(commands[0])
+  check(err)
+  item, err := dao.CreateItem(string(update.Message.Chat.ID), orderId, commands[1])
+  check(err)
+  responseData := templateData {
+    "orderId": orderId,
+    "item": item.Text,
+  }
+  response := getResponseText("add_item_success", responseData)
+  sendMessage(update.Message.Chat.ID, response)
 }
 
 func removeItem(update *tgbotapi.Update) {
-  err := dao.DeleteOrder(string(update.Message.Chat.ID), string(update.Message.From.ID), 12)
-  check(err)
-  if err == nil {
-
-  }
-  var response string
-  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
-  msg.ParseMode = "Markdown"
-  telegramBot.Send(msg)
+  //err := dao.
+  //sendMessage(update.Message.Chat.ID, response)
 }
 
 func orderResult(update *tgbotapi.Update) {
@@ -74,16 +72,13 @@ func orderResult(update *tgbotapi.Update) {
   responseData := templateData {
     "orderName": order.Name,
     "orderId": order.Id,
-    //"orderItems": order
   }
   if err == nil {
     response = getResponseText("order_result", responseData)
   } else {
     response = getResponseText("order_result_fail", responseData)
   }
-  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
-  msg.ParseMode = "Markdown"
-  telegramBot.Send(msg)
+  sendMessage(update.Message.Chat.ID, response)
 }
 
 func closeOrder(update *tgbotapi.Update) {
@@ -99,7 +94,5 @@ func closeOrder(update *tgbotapi.Update) {
   } else {
     response = getResponseText("close_fail_order_id", responseData)
   }
-  msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
-  msg.ParseMode = "Markdown"
-  telegramBot.Send(msg)
+  sendMessage(update.Message.Chat.ID, response)
 }

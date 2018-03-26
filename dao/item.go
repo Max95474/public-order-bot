@@ -21,6 +21,16 @@ func CreateItem(chatId string, orderId int, text string) (*models.Item, error) {
   return &item, err
 }
 
+//func DeleteItem(chatId string, orderId int, userId string) error {
+//  item := models.Item{
+//    Id userId,
+//    OrderId: orderId,
+//
+//  }
+//  err := db.Conn.Delete(&order)
+//  return err
+//}
+
 func GetItems(chatId string, orderId int) ([]models.Item, error) {
   order := models.Order{Id: orderId}
   err := db.Conn.Select(&order)
