@@ -1,7 +1,7 @@
 version: "2"
 
 services:
-  localhost:
+  database:
     image: postgres:9.6
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
